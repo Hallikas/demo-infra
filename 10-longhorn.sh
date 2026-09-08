@@ -52,6 +52,6 @@ helm repo add longhorn https://charts.longhorn.io
 helm repo update
 
 #helm show values longhorn/longhorn > longhorn.values.default.yaml
-#helm upgrade --install=true longhorn longhorn/longhorn \
-#     --namespace longhorn-system --create-namespace \
-#     --values longhorn.values.yaml
+helm upgrade --install=true longhorn longhorn/longhorn \
+     --namespace longhorn-system --create-namespace \
+     --values longhorn.values.yaml
