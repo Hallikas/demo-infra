@@ -1,4 +1,4 @@
-#echo "Verify CLUSTER value in this file, and remove/comment this line" && exit
+echo "Verify CLUSTER value in this file, and remove/comment this line" && exit
 CLUSTER=kube.semilab.net
 
 kubectl create ns argocd
