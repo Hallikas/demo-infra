@@ -1,4 +1,4 @@
-#echo "Verify CLUSTER value in this file, and remove/comment this line" && exit
+echo "Verify CLUSTER value in this file, and remove/comment this line" && exit
 CLUSTER=kube.semilab.net
 
 [ -e gitea.values.yaml ] || cat <<EOF > gitea.values.yaml
@@ -78,7 +78,6 @@ spec:
 # volumeName: pv-gitea
 EOF
 kubectl apply -f gitea-pvc.yaml
-exit
 
 #helm show values oci://docker.gitea.com/charts/gitea > gitea.values.default.yaml
 helm upgrade --install gitea oci://docker.gitea.com/charts/gitea \
