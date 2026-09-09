@@ -26,10 +26,34 @@ fs.inotify.max_user_instances=1024
 fs.inotify.max_queued_events=16384
 EOF
 
+# Force load modules immediately
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+cat <<'EOF' | sudo tee /etc/modules-load.d/rke2.conf
+overlay
+br_netfilter
+EOF
+
+cat <<EOF | sudo tee /etc/sysctl.d/99-rke2.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward = 1
+EOF
+
+# Apply changes immediately
+sudo sysctl --system
+
 ### Other Tools
 apt-get -y install \
+  iptables iproute2 net-tools \
   argon2 apache2-utils sqlite3 \
   sshpass ansible libssl-dev
+
+# Turn off Swap (Required by Kubernetes)
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
 
 grep -q "alias df"       ~/.profile || echo "alias df='df -x overlay -x tmpfs -x vfat -x efivarfs'" >> ~/.profile
 grep -q "alias kubeseal" ~/.profile || echo "alias kubeseal='kubeseal --controller-name=sealed-secrets -o yaml'" >> ~/.profile
