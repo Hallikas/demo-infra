@@ -20,6 +20,12 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/default/locale
 echo "#LC_TIME=fi_FI.UTF-8" >> /etc/default/locale
 
+### Other Tools
+apt-get -y install \
+  iptables iproute2 net-tools \
+  argon2 apache2-utils sqlite3 \
+  sshpass ansible libssl-dev
+
 cat <<'EOF' > /etc/sysctl.d/20-inotify.conf
 fs.inotify.max_user_watches=60086
 fs.inotify.max_user_instances=1024
@@ -43,12 +49,6 @@ EOF
 
 # Apply changes immediately
 sudo sysctl --system
-
-### Other Tools
-apt-get -y install \
-  iptables iproute2 net-tools \
-  argon2 apache2-utils sqlite3 \
-  sshpass ansible libssl-dev
 
 # Turn off Swap (Required by Kubernetes)
 sudo swapoff -a
